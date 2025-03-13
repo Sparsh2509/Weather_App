@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/Constants/size.dart';
 import 'package:weather_app/Pages/Homepage.dart';
+import 'package:weather_app/Pages/Loading.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +25,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // scaffoldBackgroundColor: const Color(0xff000000)
       ),
-      home: HomeScreen(),
+      routes: {
+        "/" :(context) => LoadingScreen(),
+        "/home" : (context) => HomeScreen(),
+
+      },
+
     );
 
       

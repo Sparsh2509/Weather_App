@@ -10,8 +10,18 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text("Loading Screen"),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, "/home");
+                },
+                icon: Icon(Icons.home))
+          ],
+        ),
+      ),
     );
   }
 }

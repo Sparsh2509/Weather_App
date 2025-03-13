@@ -11,7 +11,8 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("Location Screen"),
-    );
+      body: Center(child: Text("Location Screen"))
+      );
+    
   }
 }
