@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/Constants/size.dart';
+import 'package:weather_app/Pages/Homepage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,9 +22,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xff000000)
+        // scaffoldBackgroundColor: const Color(0xff000000)
       ),
-      // home: const Splash(),
+      home: HomeScreen(),
     );
 
       
