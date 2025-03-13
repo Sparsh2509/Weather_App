@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,10 +10,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("Home Screen")),
-
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Home Page"),
+        ),
+      
+      ),
     );
   }
 }
