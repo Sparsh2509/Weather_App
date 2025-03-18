@@ -1,28 +1,61 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_app/Constants/colors.dart';
+import 'package:weather_app/Constants/size.dart';
 
 
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _SplashScreenState extends State<SplashScreen> {
+   void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.pushReplacementNamed(context, '/weather');
+    });
+  }
+
   
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        backgroundColor: splashColor,
+      
+
+        body:
+        Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/home");
-                },
-                icon: Icon(Icons.home))
+            Image.asset('assets/splash_screen.gif', width: 150, height: 150),
+            SizedBox(height: 20),
+            AnimatedTextKit(
+              animatedTexts: [
+                TyperAnimatedText(
+                  "Weather App",
+                  textStyle: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: blackColor,
+                  ),
+                  speed: Duration(milliseconds: 100),
+                ),
+              ],
+              totalRepeatCount: 1,
+            ),
+            SizedBox(height: screenHeight *0.2),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+            ),
+            
           ],
         ),
+      ),
       ),
     );
   }

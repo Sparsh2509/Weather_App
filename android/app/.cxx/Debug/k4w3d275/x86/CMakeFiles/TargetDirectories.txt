@@ -1,0 +1,2 @@
+D:/Sparsh/Flutter Apps/Weather_App/android/app/.cxx/Debug/k4w3d275/x86/CMakeFiles/edit_cache.dir
+D:/Sparsh/Flutter Apps/Weather_App/android/app/.cxx/Debug/k4w3d275/x86/CMakeFiles/rebuild_cache.dir
