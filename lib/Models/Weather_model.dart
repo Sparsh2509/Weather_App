@@ -11,4 +11,6 @@ class worker {
       required this.humidity,
       required this.airspeed,
       required this.description});
+
+  
 }
