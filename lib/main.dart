@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/Constants/size.dart';
 import 'package:weather_app/Pages/Homepage.dart';
-import 'package:weather_app/Pages/Loading.dart';
+import 'package:weather_app/Pages/Splash.dart';
 
 void main() {
   runApp(const MyApp());

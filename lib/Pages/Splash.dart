@@ -14,9 +14,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
    void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/weather');
-    });
+    // Future.delayed(Duration(seconds: 3), () {
+    //   Navigator.pushReplacementNamed(context, '/weather');
+    // });
   }
 
   
@@ -33,20 +33,21 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/splash_screen.gif', width: 150, height: 150),
-            SizedBox(height: 20),
+            SizedBox(height: screenHeight*0.02),
             AnimatedTextKit(
               animatedTexts: [
                 TyperAnimatedText(
                   "Weather App",
                   textStyle: TextStyle(
-                    fontSize: 24,
+                    fontSize: 28,
+                    fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.bold,
                     color: blackColor,
                   ),
                   speed: Duration(milliseconds: 100),
                 ),
               ],
-              totalRepeatCount: 1,
+              totalRepeatCount: 2,
             ),
             SizedBox(height: screenHeight *0.2),
             CircularProgressIndicator(
