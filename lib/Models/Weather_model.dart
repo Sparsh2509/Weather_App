@@ -1,16 +1,20 @@
-class worker {
-  String location;
-  String temp;
-  String humidity;
-  String airspeed;
-  String description;
+class WeatherModel {
+  final String cityName;
+  final double temperature;
+  final String description;
+  final String icon;
+  final double windSpeed;
+  final int humidity;
+  final double feelsLike;
 
-  worker(
-      {required this.location,
-      required this.temp,
-      required this.humidity,
-      required this.airspeed,
-      required this.description});
+  WeatherModel({
+    required this.cityName,
+    required this.temperature,
+    required this.description,
+    required this.icon,
+    required this.windSpeed,
+    required this.humidity,
+    required this.feelsLike,
+  });
 
-  
 }
