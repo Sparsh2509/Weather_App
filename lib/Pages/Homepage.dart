@@ -3,8 +3,6 @@ import 'package:weather_app/Constants/weather_card.dart';
 import 'package:weather_app/Models/Weather_model.dart';
 import 'package:weather_app/Services/get_services.dart';
 
-
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -15,19 +13,25 @@ class _HomeScreenState extends State<HomeScreen> {
   final WeatherService _weatherService = WeatherService();
   WeatherModel? _weather;
   bool _isLoading = false;
-  bool _isDarkMode = false; // Track dark mode state
+  bool _isDarkMode = true;
 
   void _fetchWeather() async {
-    FocusScope.of(context).unfocus();
+    FocusScope.of(context).unfocus(); // Hide keyboard
     setState(() {
       _isLoading = true;
     });
-
+    
     final weather = await _weatherService.fetchWeather(_cityController.text);
-
+    
     setState(() {
       _weather = weather;
       _isLoading = false;
+    });
+  }
+
+  void _toggleTheme() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
     });
   }
 
@@ -35,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -45,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -61,20 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
-                      _isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                      color: _isDarkMode ? Colors.white : Colors.black,
-                      size: 30,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isDarkMode = !_isDarkMode; // Toggle dark mode
-                      });
-                    },
+                    icon: Icon(_isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                        color: _isDarkMode ? Colors.white : Colors.black,
+                        size: 30),
+                    onPressed: _toggleTheme,
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               TextField(
                 controller: _cityController,
                 decoration: InputDecoration(
@@ -89,11 +89,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 style: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               _isLoading
                   ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(_isDarkMode ? Colors.white : Colors.blue)))
                   : _weather != null
-                      ? Expanded(child: SingleChildScrollView(child: WeatherCard(weather: _weather!, isDarkMode: _isDarkMode)))
+                      ? Flexible(
+                          child: SingleChildScrollView(
+                            child: WeatherCard(weather: _weather!, isDarkMode: _isDarkMode),
+                          ),
+                        )
                       : Container(),
             ],
           ),
