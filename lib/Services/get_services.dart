@@ -20,7 +20,7 @@ class WeatherService {
           feelsLike: data["main"]["feels_like"].toDouble(),
         );
       } else {
-        print("Error: ${response.statusCode} - ${response.body}");
+        print("Error: No City Searched");
         return null;
       }
     } catch (e) {
