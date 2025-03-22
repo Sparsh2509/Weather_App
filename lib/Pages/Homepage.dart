@@ -1,90 +1,104 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:weather_app/Constants/colors.dart';
-import 'dart:convert';
+import 'package:weather_app/Constants/weather_card.dart';
+import 'package:weather_app/Models/Weather_model.dart';
+import 'package:weather_app/Services/get_services.dart';
 
-import 'package:weather_app/Constants/size.dart';
+
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-    final SearchController _searchController = SearchController();
-    String _weatherInfo = "Enter a location to get weather";
+  final TextEditingController _cityController = TextEditingController();
+  final WeatherService _weatherService = WeatherService();
+  WeatherModel? _weather;
+  bool _isLoading = false;
+  bool _isDarkMode = false; // Track dark mode state
 
-    Future<void> fetchWeather(String location) async {
-     try{
-      Response response = await get(Uri.parse("http://api.openweathermap.org/data/2.5/weather?q=$location&appid=5d70bc60229315ee65eff569b57f6d8b&units=metric"));
-       var data = jsonDecode(response.body.toString());
-       print(data);
-      
-      if (data["cod"] == 200){
-        setState(() {
-          _weatherInfo = data["main"]["temp"].toString();
-          print(_weatherInfo);
-        });
-      }
+  void _fetchWeather() async {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _isLoading = true;
+    });
 
-      else {
-        setState(() {
-          _weatherInfo = "Location not found!";
-        });
-      }
+    final weather = await _weatherService.fetchWeather(_cityController.text);
 
-
-     }
-     catch(e){
-      setState(() {
-        _weatherInfo = "Error fetching weather";
-      });
-     }
-     
-    }
+    setState(() {
+      _weather = weather;
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-         appBar: AppBar(title: Text("Weather App")),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          
-          children: [
-            SizedBox(
-              height: screenHeight*0.02
-            ),
-            TextFormField(
-              style: TextStyle(color: whiteColor),
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: "Enter Location",
-                hintStyle: TextStyle(color: whiteColor),
-                border: OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search, color: whiteColor,),
-                  onPressed: () {
-                    fetchWeather(_searchController.text);
-                  },
-                ),
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: _isDarkMode 
+                ? [Colors.black87, Colors.black54] 
+                : [Colors.blueAccent, Colors.lightBlueAccent],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Weather App",
+                    style: TextStyle(
+                      fontSize: 28, 
+                      fontWeight: FontWeight.bold, 
+                      color: _isDarkMode ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      _isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                      color: _isDarkMode ? Colors.white : Colors.black,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isDarkMode = !_isDarkMode; // Toggle dark mode
+                      });
+                    },
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 20),
-               Text(
-                  _weatherInfo,
-                  style: TextStyle(fontSize: 18,color: whiteColor),
-                  textAlign: TextAlign.center,
+              SizedBox(height: 20),
+              TextField(
+                controller: _cityController,
+                decoration: InputDecoration(
+                  hintText: "Enter city name",
+                  filled: true,
+                  fillColor: _isDarkMode ? Colors.grey[800] : Colors.white,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search, color: _isDarkMode ? Colors.white : Colors.black),
+                    onPressed: _fetchWeather,
+                  ),
                 ),
-          ],
+                style: TextStyle(color: _isDarkMode ? Colors.white : Colors.black),
+              ),
+              SizedBox(height: 20),
+              _isLoading
+                  ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(_isDarkMode ? Colors.white : Colors.blue)))
+                  : _weather != null
+                      ? Expanded(child: SingleChildScrollView(child: WeatherCard(weather: _weather!, isDarkMode: _isDarkMode)))
+                      : Container(),
+            ],
+          ),
         ),
       ),
-    )
-      );
+    );
   }
 }
