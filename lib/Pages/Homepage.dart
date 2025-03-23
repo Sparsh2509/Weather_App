@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: isDarkMode ? greyColor : splashColor, width: 2),
+                    borderSide: BorderSide(color: isDarkMode ? greyColor : blueColor, width: 2),
                   ),
                     suffixIcon: IconButton(
                       icon: Icon(Icons.search, color: isDarkMode ? whiteColor : blackColor),
