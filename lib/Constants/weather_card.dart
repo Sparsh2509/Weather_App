@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/Constants/dark_mode.dart';
 import 'package:weather_app/Constants/size.dart';
 import 'package:weather_app/Models/Weather_model.dart';
 
@@ -6,9 +7,9 @@ import 'package:weather_app/Models/Weather_model.dart';
 
 class WeatherCard extends StatelessWidget {
   final WeatherModel weather;
-  final bool isDarkMode;
 
-  WeatherCard({required this.weather, required this.isDarkMode});
+
+  WeatherCard({required this.weather});
 
   @override
   Widget build(BuildContext context) {

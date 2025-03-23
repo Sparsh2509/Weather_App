@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/Constants/colors.dart';
+import 'package:weather_app/Constants/dark_mode.dart';
 import 'package:weather_app/Constants/size.dart';
 import 'package:weather_app/Constants/weather_card.dart';
 import 'package:weather_app/Models/Weather_model.dart';
@@ -15,7 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final WeatherService _weatherService = WeatherService();
   WeatherModel? _weather;
   bool _isLoading = false;
-  bool _isDarkMode = true;
 
   void _fetchWeather() async {
     FocusScope.of(context).unfocus(); // Hide keyboard
@@ -31,11 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _toggleTheme() {
-    setState(() {
-      _isDarkMode = !_isDarkMode;
-    });
-  }
+  void toggleDarkMode() {
+  isDarkMode = !isDarkMode;
+  setState(() {});
+}
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: _isDarkMode 
+              colors: isDarkMode 
                   ? [darkGradientColor_1, darkGradientColor_2] 
                   : [lightGradientColor_1, lighGradientColor_2],
             ),
@@ -65,14 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontSize: 28, 
                         fontWeight: FontWeight.bold, 
-                        color: _isDarkMode ? whiteColor : blackColor,
+                        color: isDarkMode ? whiteColor : blackColor,
                       ),
                     ),
                     IconButton(
-                      icon: Icon(_isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                          color: _isDarkMode ? whiteColor : blackColor,
+                      icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                          color: isDarkMode ? whiteColor : blackColor,
                           size: 30),
-                      onPressed: _toggleTheme,
+                      onPressed: toggleDarkMode,
                     ),
                   ],
                 ),
@@ -81,31 +80,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   controller: _cityController,                  
                   decoration: InputDecoration(
                     hintText: "Enter city name",
-                    hintStyle: TextStyle( color:_isDarkMode? whiteColor : blackColor),
+                    hintStyle: TextStyle( color:isDarkMode? whiteColor : blackColor),
                     filled: true,
-                    fillColor: _isDarkMode ? greyColor[800] : Colors.white,
+                    fillColor: isDarkMode ? greyColor[800] : Colors.white,
                      enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: _isDarkMode ? greyColor : blackColor),
+                    borderSide: BorderSide(color: isDarkMode ? greyColor : blackColor),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: _isDarkMode ? greyColor : splashColor, width: 2),
+                    borderSide: BorderSide(color: isDarkMode ? greyColor : splashColor, width: 2),
                   ),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.search, color: _isDarkMode ? whiteColor : blackColor),
+                      icon: Icon(Icons.search, color: isDarkMode ? whiteColor : blackColor),
                       onPressed: _fetchWeather,
                     ),
                   ),
-                  style: TextStyle(fontWeight: FontWeight.bold ,color: _isDarkMode ? whiteColor : blackColor),
+                  style: TextStyle(fontWeight: FontWeight.bold ,color: isDarkMode ? whiteColor : blackColor),
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 _isLoading
-                    ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(_isDarkMode ? whiteColor : blackColor)))
+                    ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(isDarkMode ? whiteColor : blackColor)))
                     : _weather != null
                         ? Flexible(
                             child: SingleChildScrollView(
-                              child: WeatherCard(weather: _weather!, isDarkMode: _isDarkMode),
+                              child: WeatherCard(weather: _weather!),
                             ),
                           )
                         : Container(),
