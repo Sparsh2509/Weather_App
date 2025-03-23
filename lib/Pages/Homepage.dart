@@ -35,13 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
     final weather = await _weatherService.fetchWeather(_cityController.text.trim());
-    if (weather == null) {
+    if (weather == null || weather.cityName.isEmpty) {
         throw Exception("No city found");
       } 
     setState(() {
       _weather = weather;
       _isLoading = false;
-      // _cityController.clear(); // Clear input field
     });
   } catch (e) {
     setState(() {

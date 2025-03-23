@@ -7,9 +7,11 @@ class WeatherService {
     try {
       final response = await http.get(Uri.parse(
           'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=5d70bc60229315ee65eff569b57f6d8b&units=metric'));
+      print(response);
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+
         return WeatherModel(
           cityName: data["name"],
           temperature: data["main"]["temp"].toDouble(),
@@ -19,12 +21,15 @@ class WeatherService {
           windSpeed: data["wind"]["speed"].toDouble(),
           feelsLike: data["main"]["feels_like"].toDouble(),
         );
-      } else {
-        print("Error: No City Searched");
+
+      }
+  
+      
+       else {
+        
         return null;
       }
     } catch (e) {
-      print("Exception: $e");
       return null;
     }
   }
