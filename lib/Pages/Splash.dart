@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
               gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [ darkGradientColor_1, darkGradientColor_2 ])),
+                  colors: [darkGradientColor_1, darkGradientColor_2])),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

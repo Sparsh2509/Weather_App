@@ -18,23 +18,63 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = false;
 
   void _fetchWeather() async {
-    FocusScope.of(context).unfocus(); // Hide keyboard
+    FocusScope.of(context).unfocus();
+
+     if (_cityController.text.trim().isEmpty) {
+      setState(() {
+      _weather = null; // Clear previous data
+    });
+       _showSnackBar("Please enter a city name", redColor);
+     
+      return;
+    } // Hide keyboard
     setState(() {
       _isLoading = true;
+      _weather = null ;
     });
-    
-    final weather = await _weatherService.fetchWeather(_cityController.text);
-    
+
+    try {
+    final weather = await _weatherService.fetchWeather(_cityController.text.trim());
+    if (weather == null) {
+        throw Exception("No city found");
+      } 
     setState(() {
       _weather = weather;
       _isLoading = false;
+      // _cityController.clear(); // Clear input field
     });
+  } catch (e) {
+    setState(() {
+      
+      _isLoading = false;
+      _weather = null ;
+    });
+     _showSnackBar(e.toString().contains("No city found") ? "No city found" : "Error fetching weather", redColor);
+    
+  }
+  
+
+  }
+    void _showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
   }
 
   void toggleDarkMode() {
-  isDarkMode = !isDarkMode;
-  setState(() {});
-}
+    isDarkMode = !isDarkMode;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +87,14 @@ class _HomeScreenState extends State<HomeScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: isDarkMode 
-                  ? [darkGradientColor_1, darkGradientColor_2] 
+              colors: isDarkMode
+                  ? [darkGradientColor_1, darkGradientColor_2]
                   : [lightGradientColor_1, lighGradientColor_2],
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: screenHeight *0.02, vertical: screenWidth*0.02),
+            padding: EdgeInsets.symmetric(
+                horizontal: screenHeight * 0.02, vertical: screenWidth * 0.02),
             child: Column(
               children: [
                 Row(
@@ -62,13 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       "Weather App",
                       style: TextStyle(
-                        fontSize: 28, 
-                        fontWeight: FontWeight.bold, 
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
                         color: isDarkMode ? whiteColor : blackColor,
                       ),
                     ),
                     IconButton(
-                      icon: Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                      icon: Icon(
+                          isDarkMode ? Icons.dark_mode : Icons.light_mode,
                           color: isDarkMode ? whiteColor : blackColor,
                           size: 30),
                       onPressed: toggleDarkMode,
@@ -77,30 +119,39 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: screenHeight * 0.02),
                 TextField(
-                  controller: _cityController,                  
+                  controller: _cityController,
                   decoration: InputDecoration(
                     hintText: "Enter city name",
-                    hintStyle: TextStyle( color:isDarkMode? whiteColor : blackColor),
+                    hintStyle:
+                        TextStyle(color: isDarkMode ? whiteColor : blackColor),
                     filled: true,
                     fillColor: isDarkMode ? greyColor[800] : Colors.white,
-                     enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: isDarkMode ? greyColor : blackColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: isDarkMode ? greyColor : blueColor, width: 2),
-                  ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          color: isDarkMode ? greyColor : blackColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                          color: isDarkMode ? greyColor : blueColor, width: 2),
+                    ),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.search, color: isDarkMode ? whiteColor : blackColor),
+                      icon: Icon(Icons.search,
+                          color: isDarkMode ? whiteColor : blackColor),
                       onPressed: _fetchWeather,
                     ),
                   ),
-                  style: TextStyle(fontWeight: FontWeight.bold ,color: isDarkMode ? whiteColor : blackColor),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isDarkMode ? whiteColor : blackColor),
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 _isLoading
-                    ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(isDarkMode ? whiteColor : blackColor)))
+                    ? Center(
+                        child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                isDarkMode ? whiteColor : blackColor)))
                     : _weather != null
                         ? Flexible(
                             child: SingleChildScrollView(

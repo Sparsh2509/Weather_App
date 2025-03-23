@@ -40,8 +40,7 @@ class WeatherCard extends StatelessWidget {
             ),
             Text(weather.description,
                 style: TextStyle(
-                    fontSize: 18,
-                    color: isDarkMode ? whiteColor : blackColor)),
+                    fontSize: 18, color: isDarkMode ? whiteColor : blackColor)),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,20 +70,17 @@ class WeatherCard extends StatelessWidget {
       child: Column(
         children: [
           Icon(icon, color: iconColor, size: 28),
-          SizedBox(height: screenHeight *0.01),
+          SizedBox(height: screenHeight * 0.01),
           Text(label,
               style: TextStyle(
-                  fontSize: 14,
-                  color: isDarkMode ? whiteColor : blackColor)),
-          SizedBox(height: screenHeight *0.01),
+                  fontSize: 14, color: isDarkMode ? whiteColor : blackColor)),
+          SizedBox(height: screenHeight * 0.01),
           Text(value,
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: isDarkMode ? whiteColor : blackColor)),
-          SizedBox(
-            height: screenHeight * 0.01
-          )
+          SizedBox(height: screenHeight * 0.01)
         ],
       ),
     );
